@@ -5,16 +5,7 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { Star } from 'lucide-react';
 import { getRecommendations } from '../../services/movieService';
-
-interface RecommendedItem {
-    id: number;
-    title: string;
-    poster_path: string;
-    vote_average: number;
-    release_date?: string;
-    first_air_date?: string;
-    mediaType: 'movie' | 'tv';
-}
+import { RecommendedItem } from '../types/movie';
 
 const PersonalizedRecommendations: React.FC = () => {
     const [recommendations, setRecommendations] = useState<RecommendedItem[]>([]);
@@ -67,7 +58,7 @@ const PersonalizedRecommendations: React.FC = () => {
                     .sort(() => 0.5 - Math.random())
                     .slice(0, 3);
 
-                setRecommendations(shuffled);
+                setRecommendations(shuffled as RecommendedItem[]);
             } catch (error) {
                 console.error('Error fetching recommendations:', error);
             } finally {

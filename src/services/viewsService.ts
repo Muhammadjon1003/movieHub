@@ -122,4 +122,23 @@ export const getUserViewStats = async (userId: string) => {
             recentlyViewed: []
         };
     }
+};
+
+export const updateViewStats = async (
+    userId: string,
+    mediaId: string,
+    mediaType: string,
+    stats: Record<string, any>
+) => {
+    try {
+        const docRef = doc(db, 'userViews', userId);
+        await setDoc(docRef, {
+            [`${mediaType}_${mediaId}`]: {
+                ...stats,
+                lastViewed: new Date()
+            }
+        }, { merge: true });
+    } catch (error) {
+        console.error('Error updating view stats:', error);
+    }
 }; 

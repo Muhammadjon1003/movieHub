@@ -2,6 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { searchMovies, searchTVShows } from '../services/movieService';
+import { MediaItem } from '../types/movie';
+
+interface SearchResult extends MediaItem {
+    mediaType: string;
+    title: string;
+    release_date: string;
+    popularity?: number;
+}
 
 const SearchBar: React.FC = () => {
     const [query, setQuery] = useState('');
@@ -58,6 +66,14 @@ const SearchBar: React.FC = () => {
         navigate(`/${result.mediaType}/${result.id}`);
     };
 
+    const sortResults = (results: SearchResult[]) => {
+        return [...results].sort((a, b) => {
+            const popA = a.popularity || 0;
+            const popB = b.popularity || 0;
+            return popB - popA;
+        });
+    };
+
     return (
         <div ref={searchRef} className="relative max-w-2xl mx-auto">
             <div className="relative">
@@ -81,7 +97,7 @@ const SearchBar: React.FC = () => {
                         </div>
                     ) : (
                         <div className="max-h-[400px] overflow-y-auto">
-                            {results.map((result) => (
+                            {sortResults(results).map((result) => (
                                 <div
                                     key={`${result.mediaType}-${result.id}`}
                                     onClick={() => handleResultClick(result)}

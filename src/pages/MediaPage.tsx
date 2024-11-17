@@ -13,7 +13,6 @@ interface MediaPageProps {
         total_pages: number;
     }>;
     type: 'movie' | 'tv';
-    itemsPerPage?: number;
 }
 
 // Add these genre maps
@@ -37,8 +36,7 @@ const MediaPage: React.FC<MediaPageProps> = ({
     title,
     subtitle,
     fetchMedia,
-    type,
-    itemsPerPage = 20
+    type
 }) => {
     const [media, setMedia] = useState<MediaItem[]>([]);
     const [loading, setLoading] = useState(true);

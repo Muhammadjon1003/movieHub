@@ -13,6 +13,7 @@ export interface MediaItem {
         id: number;
         name: string;
     }>;
+    popularity?: number;
 }
 
 export interface MovieDetails extends MediaItem {
@@ -113,4 +114,15 @@ export interface PersonMovieCredits {
         job: string;
         release_date: string;
     }>;
+}
+
+export interface RecommendedItem {
+    id: number;
+    title: string;
+    poster_path: string | null;
+    vote_average: number;
+    release_date?: string;
+    first_air_date?: string;
+    mediaType: 'movie' | 'tv';
+    popularity?: number;
 } 

@@ -12,29 +12,24 @@ import 'swiper/css/pagination';
 
 interface MoviesSectionProps {
     title: string;
-    subtitle: string;
-    fetchMovies: (count: number) => Promise<{ 
-        results: Movie[] | TVShow[];
-        total_pages?: number;
-    }>;
-    movieCount?: number;
-    onMovieSelect?: (media: MediaItem) => void;
-    onMoviesLoaded?: (media: MediaItem[]) => void;
+    subtitle?: string;
+    fetchMovies: (page: number) => Promise<{ results: MediaItem[]; total_pages: number; }>;
+    onMovieSelect?: (movie: MediaItem) => void;
+    onMoviesLoaded?: (movies: MediaItem[]) => void;
     type: 'movie' | 'tv';
-    linkTo: string;
+    linkTo?: string;
 }
 
-const MoviesSection: React.FC<MoviesSectionProps> = ({ 
-    title, 
-    subtitle, 
-    fetchMovies, 
-    movieCount = 10,
+const MoviesSection: React.FC<MoviesSectionProps> = ({
+    title,
+    subtitle,
+    fetchMovies,
     onMovieSelect,
     onMoviesLoaded,
     type,
     linkTo
 }) => {
-    const [movies, setMovies] = useState<Movie[]>([]);
+    const [movies, setMovies] = useState<MediaItem[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -43,7 +38,7 @@ const MoviesSection: React.FC<MoviesSectionProps> = ({
         const loadMovies = async () => {
             try {
                 setLoading(true);
-                const response = await fetchMovies(movieCount);
+                const response = await fetchMovies(1);
                 
                 if (!mounted) return;
 
@@ -69,7 +64,7 @@ const MoviesSection: React.FC<MoviesSectionProps> = ({
         return () => {
             mounted = false;
         };
-    }, [fetchMovies, movieCount]);
+    }, [fetchMovies]);
 
     if (loading) {
         return <div>Loading...</div>;

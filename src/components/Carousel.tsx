@@ -70,7 +70,7 @@ const Carousel: React.FC = () => {
                                       '-translate-x-full opacity-0'}`}
                             >
                                 <img 
-                                    src={movie.backdrop_path}
+                                    src={movie.backdrop_path || undefined}
                                     alt={movie.title}
                                     className="w-full h-full object-cover"
                                 />
