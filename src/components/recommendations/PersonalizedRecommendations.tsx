@@ -5,7 +5,7 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { Star } from 'lucide-react';
 import { getRecommendations } from '../../services/movieService';
-import { RecommendedItem } from '../types/movie';
+import { RecommendedItem } from '../../types/movie';
 
 const PersonalizedRecommendations: React.FC = () => {
     const [recommendations, setRecommendations] = useState<RecommendedItem[]>([]);

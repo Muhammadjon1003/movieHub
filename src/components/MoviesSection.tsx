@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import { Movie, MediaItem, TVShow } from '../types/movie';
+import { MediaItem } from '../types/movie';
 import MovieCard from './MovieCard';
 
 // Import Swiper styles
