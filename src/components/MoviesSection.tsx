@@ -82,16 +82,15 @@ const MoviesSection: React.FC<MoviesSectionProps> = ({
                         <h2 className="text-3xl font-bold text-white">{title}</h2>
                         <span className="text-sm font-normal text-gray-400">{subtitle}</span>
                     </div>
-                    <Link 
-                        to={linkTo}
-                        className="text-primary hover:text-primary/80 transition-colors duration-300 
-                            flex items-center gap-2"
-                    >
-                        View All
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                    </Link>
+                    {linkTo && (
+                        <Link 
+                            to={linkTo}
+                            className="text-primary hover:text-primary/80 transition-colors duration-300 
+                                flex items-center gap-2"
+                        >
+                            View All
+                        </Link>
+                    )}
                 </div>
             </div>
 

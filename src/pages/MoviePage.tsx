@@ -18,6 +18,11 @@ import { MovieDetails } from '../types/movie';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 const BACKDROP_BASE_URL = 'https://image.tmdb.org/t/p/original';
 
+interface WatchlistSubmitData {
+    status: 'plan_to_watch' | 'watching' | 'completed';
+    progress?: number;
+}
+
 const MoviePage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const location = useLocation();
@@ -115,6 +120,26 @@ const MoviePage: React.FC = () => {
             return;
         }
         setIsWatchlistModalOpen(true);
+    };
+
+    const handleWatchlistSubmit = async (data: WatchlistSubmitData) => {
+        if (!auth.currentUser || !media) return;
+
+        try {
+            await addToWatchlist(
+                auth.currentUser.uid,
+                Number(id),
+                mediaType,
+                media?.title || media?.name || '',
+                media?.poster_path || '',
+                data.status,
+                mediaType === 'tv' ? media.number_of_episodes : undefined
+            );
+            setIsInWatchlist(true);
+            setIsWatchlistModalOpen(false);
+        } catch (error) {
+            console.error('Error updating watchlist:', error);
+        }
     };
 
     if (loading || !media) {
@@ -571,24 +596,7 @@ const MoviePage: React.FC = () => {
                 mediaType={mediaType}
                 mediaTitle={media?.title || media?.name || ''}
                 totalEpisodes={mediaType === 'tv' ? media?.number_of_episodes : undefined}
-                onSubmit={async (data) => {
-                    if (!auth.currentUser) return;
-                    
-                    try {
-                        await addToWatchlist(
-                            auth.currentUser.uid,
-                            Number(id),
-                            mediaType,
-                            media?.title || media?.name || '',
-                            media?.poster_path || '',
-                            data
-                        );
-                        setIsInWatchlist(true);
-                        setIsWatchlistModalOpen(false);
-                    } catch (error) {
-                        console.error('Error updating watchlist:', error);
-                    }
-                }}
+                onSubmit={handleWatchlistSubmit}
             />
 
             <Footer />

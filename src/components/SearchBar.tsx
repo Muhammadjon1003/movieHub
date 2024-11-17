@@ -49,7 +49,7 @@ const SearchBar: React.FC = () => {
             const combinedResults = [
                 ...movieResults.map(movie => ({ ...movie, mediaType: 'movie' })),
                 ...tvResults.map(show => ({ ...show, mediaType: 'tv' }))
-            ].sort((a, b) => b.popularity - a.popularity).slice(0, 8);
+            ].sort((a, b) => (b.popularity || 0) - (a.popularity || 0)).slice(0, 8);
 
             setResults(combinedResults);
             setIsOpen(true);
@@ -124,9 +124,11 @@ const SearchBar: React.FC = () => {
                                             <span className="capitalize">{result.mediaType}</span>
                                             <span>•</span>
                                             <span>
-                                                {new Date(
-                                                    result.release_date || result.first_air_date
-                                                ).getFullYear()}
+                                                {(() => {
+                                                    const date = result.release_date || result.first_air_date;
+                                                    if (!date) return '';
+                                                    return new Date(date).getFullYear();
+                                                })()}
                                             </span>
                                         </div>
                                     </div>

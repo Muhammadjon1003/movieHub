@@ -47,7 +47,7 @@ const RandomMoviesSwiper: React.FC = () => {
                     <SwiperSlide key={movie.id}>
                         <Link to={`/movie/${movie.id}`} className="block relative h-full group">
                             <img 
-                                src={movie.poster_path}
+                                src={movie.poster_path || undefined}
                                 alt={movie.title}
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             />

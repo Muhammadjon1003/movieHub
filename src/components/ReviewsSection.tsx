@@ -11,7 +11,7 @@ interface ReviewsSectionProps {
     isReviewModalOpen: boolean;
     setIsReviewModalOpen: (open: boolean) => void;
     reviewListKey: number;
-    setReviewListKey: (key: number) => void;
+    setReviewListKey: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const ReviewsSection: React.FC<ReviewsSectionProps> = ({

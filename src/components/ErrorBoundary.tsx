@@ -6,11 +6,13 @@ interface Props {
 
 interface State {
     hasError: boolean;
+    error?: Error;
 }
 
 class ErrorBoundary extends Component<Props, State> {
     public state: State = {
-        hasError: false
+        hasError: false,
+        error: undefined
     };
 
     public static getDerivedStateFromError(error: Error): State {

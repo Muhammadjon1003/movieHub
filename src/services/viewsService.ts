@@ -61,7 +61,23 @@ export const incrementPageView = async (userId: string, mediaId: string, mediaTy
     }
 };
 
-export const getUserViewStats = async (userId: string) => {
+interface ViewStats {
+    totalViews: number;
+    movieViews: number;
+    tvViews: number;
+    uniqueMovies: number;
+    uniqueTVShows: number;
+    recentlyViewed: any[];
+}
+
+interface StatsAccumulator {
+    movieViews: number;
+    tvViews: number;
+    uniqueMovies: number;
+    uniqueTVShows: number;
+}
+
+export const getUserViewStats = async (userId: string): Promise<ViewStats> => {
     try {
         const viewsRef = doc(db, 'userViews', userId);
         const viewsDoc = await getDoc(viewsRef);
@@ -80,7 +96,7 @@ export const getUserViewStats = async (userId: string) => {
         const data = viewsDoc.data();
         const mediaViews = data.mediaViews || {};
 
-        const stats = Object.values(mediaViews).reduce((acc: any, view: any) => {
+        const stats = Object.values(mediaViews).reduce((acc: StatsAccumulator, view: any) => {
             if (view.type === 'movie') {
                 acc.movieViews += view.count;
                 acc.uniqueMovies++;
@@ -89,14 +105,13 @@ export const getUserViewStats = async (userId: string) => {
                 acc.uniqueTVShows++;
             }
             return acc;
-        }, { 
-            movieViews: 0, 
+        }, {
+            movieViews: 0,
             tvViews: 0,
             uniqueMovies: 0,
             uniqueTVShows: 0
         });
 
-        // Get recently viewed items (last 5)
         const recentlyViewed = Object.entries(mediaViews)
             .map(([id, view]: [string, any]) => ({
                 id,
@@ -108,7 +123,10 @@ export const getUserViewStats = async (userId: string) => {
 
         return {
             totalViews: data.totalViews || 0,
-            ...stats,
+            movieViews: stats.movieViews,
+            tvViews: stats.tvViews,
+            uniqueMovies: stats.uniqueMovies,
+            uniqueTVShows: stats.uniqueTVShows,
             recentlyViewed
         };
     } catch (error) {

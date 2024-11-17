@@ -23,7 +23,7 @@ const CreditsModal: React.FC<CreditsModalProps> = ({ credits, isOpen, onClose, t
                         <h3>Cast</h3>
                         <div className="cast-grid">
                             {credits.cast.slice(0, 10).map(actor => (
-                                <div key={`${actor.id}-${actor.order}`} className="cast-card">
+                                <div key={`${actor.id}-${actor.character}`} className="cast-card">
                                     <img 
                                         src={actor.profile_path || 'https://via.placeholder.com/150x225?text=No+Image'} 
                                         alt={actor.name}
